@@ -12,12 +12,12 @@ class Store {
     };
   }
 
-  // delocate !
-  //   add(inputs) {
-  //     inputs.map((input) => this.state.dataList.push(input));
-  //   }
   add(data) {
     this.state.dataList.push(data);
+  }
+
+  clear() {
+    this.state.dataList.length = 0;
   }
 
   getState() {

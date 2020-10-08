@@ -3,10 +3,12 @@
     <h2>Please enter date separted by commas:</h2>
     <p>e.g. "04/17, 4/13, 10/4" (format month/day)</p>
     <input type="text" v-model="input" @keyup.enter="fetchData(splitInput)" />
+    <button @click="clearData">Clear all</button>
+
     <div class="error" v-if="errorMessage">{{ errorMessage }}</div>
   </div>
 
-  <div class="cards-container" v-if="listState.dataList.length">
+  <div class="cards-container" v-if="listState?.dataList.length">
     <fact-card
       v-for="(data, index) in listState.dataList"
       :data="data"
@@ -30,6 +32,7 @@ export default {
     return {
       input: '',
       errorMessage: '',
+      pending: false,
     };
   },
 
@@ -41,17 +44,26 @@ export default {
 
   methods: {
     async fetchData(inputs) {
-      try {
-        await inputs.map(async (input) => {
-          const data = await axios
-            .get(url + input + '/date')
-            .then((res) => res.data);
+      if (this.pending === true) {
+        this.errorMessage = 'Please wait';
+        return;
+      } else {
+        try {
+          this.pending = true;
 
-          this.addData({ date: input, fact: data });
-        });
-      } catch (error) {
-        console.log(error);
-        this.errorMessage = 'Invalid syntax detected for at least one date';
+          await inputs.map(async (input) => {
+            const data = await axios
+              .get(url + input + '/date')
+              .then((res) => res.data);
+
+            this.addData({ date: input, fact: data });
+
+            this.pending = false;
+          });
+        } catch (error) {
+          console.log(error);
+          this.errorMessage = 'Invalid syntax detected for at least one date';
+        }
       }
     },
   },
@@ -60,7 +72,11 @@ export default {
     const addData = (data) => {
       store.add(data);
     };
-    return { listState: store.getState(), addData };
+
+    const clearData = () => {
+      store.clear();
+    };
+    return { listState: store.getState(), addData, clearData };
   },
 };
 </script>
@@ -82,5 +98,17 @@ input {
   border-radius: 0.8rem;
   width: 25vw;
   border: 1px solid #2c3e50;
+}
+button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #c84d2e;
+  color: #f5f5f5;
+  padding: 0.2rem 1rem;
+  border-radius: 0.8rem;
+  border: none;
+  cursor: pointer;
+  margin: 0.5rem auto;
 }
 </style>

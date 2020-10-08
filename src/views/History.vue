@@ -7,6 +7,7 @@
       }}
       total.
     </p>
+    <button @click="clearData">Clear all</button>
   </div>
 
   <div class="cards-container" v-if="listState.dataList.length">
@@ -29,7 +30,10 @@ export default {
   name: 'History',
   components: { FactCard },
   setup() {
-    return { listState: store.getState() };
+    const clearData = () => {
+      store.clear();
+    };
+    return { listState: store.getState(), clearData };
   },
 };
 </script>
@@ -46,5 +50,17 @@ export default {
 }
 .no-history {
   text-align: center;
+}
+button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #c84d2e;
+  color: #f5f5f5;
+  padding: 0.2rem 1rem;
+  border-radius: 0.8rem;
+  border: none;
+  cursor: pointer;
+  margin: 0.5rem auto;
 }
 </style>
