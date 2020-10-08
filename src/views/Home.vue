@@ -1,19 +1,22 @@
 <template>
-  <div class="search">
-    <h2>Please enter date separted by commas:</h2>
-    <p>e.g. "04/17, 4/13, 10/4" (format month/day)</p>
-    <input type="text" v-model="input" @keyup.enter="handleFetch" />
+  <section class="content-header">
+    <h3>Enter dates separted by commas:</h3>
+    <p>
+      Use <code>month/day</code> format. For example:
+      <code>04/17, 4/13, 10/4</code>.
+    </p>
+    <input type="text" v-model="input" @keyup.enter="handleSearch" />
+    <button @click="clearData">Clear all</button>
+    <span class="error" v-if="errorMessage">{{ errorMessage }}.</span>
+  </section>
 
-    <div class="error" v-if="errorMessage">{{ errorMessage }}</div>
-  </div>
-
-  <div class="cards-container" v-if="listState?.dataList.length">
-    <fact-card
+  <section class="cards-container" v-if="listState.dataList.length">
+    <FactCard
       v-for="(data, index) in listState.dataList"
       :data="data"
       :key="index"
     />
-  </div>
+  </section>
 </template>
 
 <script>
@@ -34,19 +37,21 @@ export default {
   },
 
   methods: {
-    splitInput() {
+    splitInputs() {
       return this.input.split(',').map((string) => string.trim());
     },
-    async handleFetch() {
+    async handleSearch() {
       if (this.loading === false) {
         this.loading === true;
-        const inputs = [...new Set(this.splitInput())]; // Set doesnt allow duplicates
+        const inputs = [...new Set(this.splitInputs())]; // Set doesnt allow duplicates
         const res = await fetchData(inputs);
 
         res.map((el) => this.addData(el));
         this.loading === false;
+        this.input = '';
       } else {
         this.errorMessage = 'Please wait';
+        console.log('request blocked!');
         return;
       }
     },
@@ -66,33 +71,9 @@ export default {
 </script>
 
 <style scoped>
-.search {
-  text-align: center;
-  margin-bottom: 1rem;
-}
 .cards-container {
+  margin-top: 1rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-}
-input {
-  padding: 0.2rem 1rem;
-  border-radius: 0.8rem;
-  width: 25vw;
-  border: 1px solid #2c3e50;
-}
-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #c84d2e;
-  color: #f5f5f5;
-  padding: 0.2rem 1rem;
-  border-radius: 0.8rem;
-  border: none;
-  cursor: pointer;
-  margin: 0.5rem auto;
 }
 </style>

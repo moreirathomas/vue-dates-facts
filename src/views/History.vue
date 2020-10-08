@@ -1,24 +1,25 @@
 <template>
-  <div class="history">
-    <h2>Search history:</h2>
+  <div class="content-header">
+    <h3>Search history:</h3>
     <p v-if="listState.dataList.length">
-      You searched for {{ listState.dataList.length }} date{{
+      You searched for <code>{{ listState.dataList.length }}</code> date{{
         listState.dataList.length > 1 ? 's' : ''
       }}
       total.
+    </p>
+    <p v-else>
+      <code>0</code> search in history, try searching for dates from the
+      <router-link to="/">homepage</router-link>.
     </p>
     <button @click="clearData">Clear all</button>
   </div>
 
   <div class="cards-container" v-if="listState.dataList.length">
-    <fact-card
+    <FactCard
       v-for="(data, index) in listState.dataList"
       :data="data"
       :key="index"
     />
-  </div>
-  <div class="no-history" v-else>
-    No history yet, try to search for dates from homepage.
   </div>
 </template>
 
@@ -40,28 +41,10 @@ export default {
 </script>
 
 <style scoped>
-.history {
-  text-align: center;
-  margin-bottom: 1rem;
-}
 .cards-container {
+  margin-top: 1rem;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-}
-.no-history {
-  text-align: center;
-}
-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #c84d2e;
-  color: #f5f5f5;
-  padding: 0.2rem 1rem;
-  border-radius: 0.8rem;
-  border: none;
-  cursor: pointer;
-  margin: 0.5rem auto;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 1rem;
 }
 </style>

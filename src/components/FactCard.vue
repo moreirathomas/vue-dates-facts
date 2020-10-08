@@ -1,7 +1,7 @@
 <template>
   <div class="fact-card">
-    <h3>{{ data.date }}</h3>
-    <p>{{ data.fact }}</p>
+    <h4>{{ data.date }}</h4>
+    <blockquote>{{ data.fact }}</blockquote>
   </div>
 </template>
 
@@ -14,17 +14,9 @@ export default {
 
 <style scoped>
 .fact-card {
-  max-width: 25vw;
-  margin: 0 auto;
-  padding: 1rem 2rem;
-  border-radius: 8px;
-  background-color: #2c3e50;
-  color: #f5f5f5;
-}
-h3 {
-  margin: 0;
-}
-p {
-  margin: 0;
+  margin-bottom: 1rem;
+  padding: 0 0.75rem;
+  background-color: #eee;
+  border-radius: 0.375rem;
 }
 </style>
