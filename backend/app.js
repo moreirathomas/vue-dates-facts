@@ -14,7 +14,6 @@ app.use(
 );
 app.use(cors());
 
-// app.use(dateRouter);
 app.use('/api', dateAPI);
 
 const port = process.env.PORT || 4000;

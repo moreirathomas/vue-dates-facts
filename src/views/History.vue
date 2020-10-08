@@ -29,6 +29,7 @@ import store from '../store';
 export default {
   name: 'History',
   components: { FactCard },
+
   setup() {
     const clearData = () => {
       store.clear();

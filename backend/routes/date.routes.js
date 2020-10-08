@@ -24,7 +24,6 @@ dateRoute.route('/').post(async (req, res) => {
         return { date: input, fact: await fetchFact(input) };
       })
     );
-    console.log({ dataList });
     res.send(dataList);
   } catch (error) {
     res.status(500).send(error);
