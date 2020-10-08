@@ -13,7 +13,9 @@ class Store {
   }
 
   add(data) {
-    this.state.dataList.push(data);
+    if (this.state.dataList.findIndex((el) => el.date === data.date) === -1) {
+      this.state.dataList.push(data);
+    }
   }
 
   clear() {

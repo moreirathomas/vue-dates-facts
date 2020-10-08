@@ -2,10 +2,10 @@
   <div class="search">
     <h2>Please enter date separted by commas:</h2>
     <p>e.g. "04/17, 4/13, 10/4" (format month/day)</p>
-    <input type="text" v-model="input" @keyup.enter="fetchData(splitInput)" />
-    <button @click="clearData">Clear all</button>
+    <!-- <input type="text" v-model="input" @keyup.enter="fetchData(splitInput)" /> -->
+    <input type="text" v-model="input" @keyup.enter="handleFetch" />
 
-    <div class="error" v-if="errorMessage">{{ errorMessage }}</div>
+    <!-- <div class="error" v-if="errorMessage">{{ errorMessage }}</div> -->
   </div>
 
   <div class="cards-container" v-if="listState?.dataList.length">
@@ -20,9 +20,7 @@
 <script>
 import FactCard from '../components/FactCard.vue';
 import store from '../store';
-import axios from 'axios';
-
-const url = 'http://numbersapi.com/';
+import fetchData from '../api';
 
 export default {
   name: 'Home',
@@ -36,35 +34,15 @@ export default {
     };
   },
 
-  computed: {
+  methods: {
     splitInput() {
       return this.input.split(',').map((string) => string.trim());
     },
-  },
+    async handleFetch() {
+      const inputs = [...new Set(this.splitInput())]; // Set doesnt allow duplicates
+      const res = await fetchData(inputs);
 
-  methods: {
-    async fetchData(inputs) {
-      if (this.pending === true) {
-        this.errorMessage = 'Please wait';
-        return;
-      } else {
-        try {
-          this.pending = true;
-
-          await inputs.map(async (input) => {
-            const data = await axios
-              .get(url + input + '/date')
-              .then((res) => res.data);
-
-            this.addData({ date: input, fact: data });
-
-            this.pending = false;
-          });
-        } catch (error) {
-          console.log(error);
-          this.errorMessage = 'Invalid syntax detected for at least one date';
-        }
-      }
+      res.map((el) => this.addData(el));
     },
   },
 
