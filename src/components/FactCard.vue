@@ -1,14 +1,14 @@
 <template>
   <div class="fact-card">
-    <h4>{{ data.date }}</h4>
-    <blockquote>{{ data.fact }}</blockquote>
+    <h4>{{ element.date }}</h4>
+    <blockquote>{{ element.fact }}</blockquote>
   </div>
 </template>
 
 <script>
 export default {
   name: 'FactCard',
-  props: ['data'],
+  props: ['element'],
 };
 </script>
 

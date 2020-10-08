@@ -8,22 +8,22 @@ class Store {
 
   data() {
     return {
-      dataList: [],
+      factsList: [],
     };
   }
 
-  add(data) {
+  add(element) {
     if (
-      data.date &&
-      data.fact &&
-      this.state.dataList.findIndex((el) => el.date === data.date) === -1
+      element.date &&
+      element.fact &&
+      this.state.factsList.findIndex((el) => el.date === element.date) === -1
     ) {
-      this.state.dataList.push(data);
+      this.state.factsList.push(element);
     }
   }
 
   clear() {
-    this.state.dataList.length = 0;
+    this.state.factsList.length = 0;
   }
 
   getState() {

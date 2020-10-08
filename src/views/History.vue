@@ -1,23 +1,23 @@
 <template>
   <div class="content-header">
     <h3>Search history:</h3>
-    <p v-if="listState.dataList.length">
-      You searched for <code>{{ listState.dataList.length }}</code> date{{
-        listState.dataList.length > 1 ? 's' : ''
+    <p v-if="listState.factsList.length">
+      You searched for <code>{{ listState.factsList.length }}</code> date{{
+        listState.factsList.length > 1 ? 's' : ''
       }}
-      total.
+      in total.
     </p>
     <p v-else>
       <code>0</code> search in history, try searching for dates from the
       <router-link to="/">homepage</router-link>.
     </p>
-    <button @click="clearData">Clear all</button>
+    <button @click="clearState">Clear all</button>
   </div>
 
-  <div class="cards-container" v-if="listState.dataList.length">
+  <div class="cards-container" v-if="listState.factsList.length">
     <FactCard
-      v-for="(data, index) in listState.dataList"
-      :data="data"
+      v-for="(data, index) in listState.factsList"
+      :element="data"
       :key="index"
     />
   </div>
@@ -32,10 +32,10 @@ export default {
   components: { FactCard },
 
   setup() {
-    const clearData = () => {
+    const clearState = () => {
       store.clear();
     };
-    return { listState: store.getState(), clearData };
+    return { listState: store.getState(), clearState };
   },
 };
 </script>

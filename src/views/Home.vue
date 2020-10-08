@@ -6,14 +6,14 @@
       <code>04/17, 4/13, 10/4</code>.
     </p>
     <input type="text" v-model="input" @keyup.enter="handleSearch" />
-    <button @click="clearData">Clear all</button>
+    <button @click="clearState">Clear all</button>
     <span class="error" v-if="errorMessage">{{ errorMessage }}.</span>
   </section>
 
-  <section class="cards-container" v-if="listState.dataList.length">
+  <section class="cards-container" v-if="listState.factsList.length">
     <FactCard
-      v-for="(data, index) in listState.dataList"
-      :data="data"
+      v-for="(element, index) in listState.factsList"
+      :element="element"
       :key="index"
     />
   </section>
@@ -46,7 +46,7 @@ export default {
         const inputs = [...new Set(this.splitInputs())]; // Set doesnt allow duplicates
         const res = await fetchData(inputs);
 
-        res.map((el) => this.addData(el));
+        res.map((el) => this.addToState(el));
         this.loading === false;
         this.input = '';
       } else {
@@ -58,14 +58,14 @@ export default {
   },
 
   setup() {
-    const addData = (data) => {
-      store.add(data);
+    const addToState = (element) => {
+      store.add(element);
     };
 
-    const clearData = () => {
+    const clearState = () => {
       store.clear();
     };
-    return { listState: store.getState(), addData, clearData };
+    return { listState: store.getState(), addToState, clearState };
   },
 };
 </script>
