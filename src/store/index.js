@@ -13,7 +13,11 @@ class Store {
   }
 
   add(data) {
-    if (this.state.dataList.findIndex((el) => el.date === data.date) === -1) {
+    if (
+      data.date &&
+      data.fact &&
+      this.state.dataList.findIndex((el) => el.date === data.date) === -1
+    ) {
       this.state.dataList.push(data);
     }
   }

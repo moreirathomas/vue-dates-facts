@@ -2,10 +2,9 @@
   <div class="search">
     <h2>Please enter date separted by commas:</h2>
     <p>e.g. "04/17, 4/13, 10/4" (format month/day)</p>
-    <!-- <input type="text" v-model="input" @keyup.enter="fetchData(splitInput)" /> -->
     <input type="text" v-model="input" @keyup.enter="handleFetch" />
 
-    <!-- <div class="error" v-if="errorMessage">{{ errorMessage }}</div> -->
+    <div class="error" v-if="errorMessage">{{ errorMessage }}</div>
   </div>
 
   <div class="cards-container" v-if="listState?.dataList.length">
@@ -30,7 +29,7 @@ export default {
     return {
       input: '',
       errorMessage: '',
-      pending: false,
+      loading: false,
     };
   },
 
@@ -39,10 +38,17 @@ export default {
       return this.input.split(',').map((string) => string.trim());
     },
     async handleFetch() {
-      const inputs = [...new Set(this.splitInput())]; // Set doesnt allow duplicates
-      const res = await fetchData(inputs);
+      if (this.loading === false) {
+        this.loading === true;
+        const inputs = [...new Set(this.splitInput())]; // Set doesnt allow duplicates
+        const res = await fetchData(inputs);
 
-      res.map((el) => this.addData(el));
+        res.map((el) => this.addData(el));
+        this.loading === false;
+      } else {
+        this.errorMessage = 'Please wait';
+        return;
+      }
     },
   },
 
