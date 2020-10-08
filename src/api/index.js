@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const url = 'http://localhost:3000/api';
+const url = 'http://localhost:4000/api';
 
 async function fetchData(inputs) {
   try {
