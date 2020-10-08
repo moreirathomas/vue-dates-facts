@@ -21,9 +21,6 @@
 import FactCard from '../components/FactCard.vue';
 import store from '../store';
 import fetchData from '../api';
-// import axios from 'axios';
-
-// const url = 'http://numbersapi.com/';
 
 export default {
   name: 'Home',
@@ -36,38 +33,15 @@ export default {
     };
   },
 
-  // computed: {
-  //   splitInput() {
-  //     return this.input.split(',').map((string) => string.trim());
-  //   },
-  // },
-
   methods: {
-    // async fetchData(inputs) {
-    //   try {
-    //     await inputs.map(async (input) => {
-    //       const data = await axios
-    //         .get(url + input + '/date')
-    //         .then((res) => res.data);
-
-    //       this.addData({ date: input, fact: data });
-    //     });
-    //   } catch (error) {
-    //     console.log(error);
-    //     // this.errorMessage = 'Invalid syntax detected for at least one date';
-    //   }
-    // },
     splitInput() {
       return this.input.split(',').map((string) => string.trim());
     },
-    handleFetch() {
-      const inputs = this.splitInput();
-      const newData = fetchData(inputs);
-      console.log(newData);
+    async handleFetch() {
+      const inputs = [...new Set(this.splitInput())]; // Set doesnt allow duplicates
+      const res = await fetchData(inputs);
 
-      newData.map((data, index) =>
-        this.addData({ date: inputs[index], fact: data })
-      );
+      res.map((el) => this.addData(el));
     },
   },
 

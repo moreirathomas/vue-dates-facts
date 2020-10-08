@@ -12,12 +12,10 @@ class Store {
     };
   }
 
-  // delocate !
-  //   add(inputs) {
-  //     inputs.map((input) => this.state.dataList.push(input));
-  //   }
   add(data) {
-    this.state.dataList.push(data);
+    if (this.state.dataList.findIndex((el) => el.date === data.date) === -1) {
+      this.state.dataList.push(data);
+    }
   }
 
   getState() {
