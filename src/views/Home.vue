@@ -1,17 +1,23 @@
 <template>
   <div class="search">
     <h2>Please enter date separted by commas:</h2>
+    <p>e.g. "04/17, 4/13, 10/4" (format month/day)</p>
     <input type="text" v-model="input" @keyup.enter="fetchData(splitInput)" />
     <div class="error" v-if="errorMessage">{{ errorMessage }}</div>
   </div>
 
-  <div class="cards-container" v-if="dataList.length">
-    <fact-card v-for="(data, index) in dataList" :data="data" :key="index" />
+  <div class="cards-container" v-if="listState.dataList.length">
+    <fact-card
+      v-for="(data, index) in listState.dataList"
+      :data="data"
+      :key="index"
+    />
   </div>
 </template>
 
 <script>
 import FactCard from '../components/FactCard.vue';
+import store from '../store';
 import axios from 'axios';
 
 const url = 'http://numbersapi.com/';
@@ -22,16 +28,17 @@ export default {
 
   data() {
     return {
-      dataList: [],
       input: '',
       errorMessage: '',
     };
   },
+
   computed: {
     splitInput() {
       return this.input.split(',').map((string) => string.trim());
     },
   },
+
   methods: {
     async fetchData(inputs) {
       try {
@@ -39,13 +46,21 @@ export default {
           const data = await axios
             .get(url + input + '/date')
             .then((res) => res.data);
-          this.dataList.push({ date: input, fact: data });
+
+          this.addData({ date: input, fact: data });
         });
       } catch (error) {
         console.log(error);
         this.errorMessage = 'Invalid syntax detected for at least one date';
       }
     },
+  },
+
+  setup() {
+    const addData = (data) => {
+      store.add(data);
+    };
+    return { listState: store.getState(), addData };
   },
 };
 </script>
@@ -61,5 +76,11 @@ export default {
   justify-content: center;
   align-items: center;
   gap: 1rem;
+}
+input {
+  padding: 0.2rem 1rem;
+  border-radius: 0.8rem;
+  width: 25vw;
+  border: 1px solid #2c3e50;
 }
 </style>
