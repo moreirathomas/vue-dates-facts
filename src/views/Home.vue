@@ -11,7 +11,8 @@
 
     <div class="actions-wrapper">
       <input type="text" v-model="input" @keyup.enter="handleSearch" />
-      <button @click="clearState" :disabled="!listState.factsList.length">
+      <button class="primary" @click="handleSearch" :disabled="!input">Add</button>
+      <button @click="clearStateAndStorage" :disabled="!listState.factsList.length">
         Clear all
       </button>
       <pre class="error" v-if="errorMessage">
@@ -32,7 +33,8 @@
 <script>
 import FactCard from '../components/FactCard.vue';
 import store from '../store';
-import { fetchData, checkDuplicate } from '../api';
+import { fetchData, checkDuplicate } from '../utils/api';
+import { addOneToStorage, clearAllStorage } from '../utils/storage';
 
 export default {
   name: 'Home',
@@ -68,7 +70,7 @@ export default {
           (input) => !checkDuplicate(input, this.listState.factsList)
         );
         const res = await fetchData(inputs);
-        res.map((el) => this.addToState(el));
+        res.map((el) => this.addToStateAndStorage(el));
 
         this.loading === false;
         this.input = '';
@@ -81,14 +83,17 @@ export default {
   },
 
   setup() {
-    const addToState = (element) => {
+    const addToStateAndStorage = (element) => {
       store.addOne(element);
+      addOneToStorage(element);
     };
 
-    const clearState = () => {
+    const clearStateAndStorage = () => {
       store.clearAll();
+      clearAllStorage();
     };
-    return { listState: store.getState(), addToState, clearState };
+
+    return { listState: store.getState(), addToStateAndStorage, clearStateAndStorage };
   },
 };
 </script>
@@ -99,7 +104,7 @@ export default {
 }
 .error {
   margin: 0;
-  color: #f56a6a;
+  color: var(--red);
   max-height: 3rem;
   max-width: 26.24rem;
   margin: 0.25rem 0.25rem 0.25rem auto;

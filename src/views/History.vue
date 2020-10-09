@@ -1,5 +1,5 @@
 <template>
-  <div class="content-header">
+  <section class="content-header">
     <div class="text-wrapper">
       <h3>Search history:</h3>
       <p v-if="listState.factsList.length">
@@ -14,40 +14,44 @@
       </p>
     </div>
     <div class="actions-wrapper">
-      <button @click="clearState" :disabled="!listState.factsList.length">
+      <button @click="clearStateAndStorage" :disabled="!listState.factsList.length">
         Clear all
       </button>
     </div>
-  </div>
+  </section>
 
-  <div class="cards-container" v-if="listState.factsList.length">
+  <section class="cards-container" v-if="listState.factsList.length">
     <FactCard
-      v-for="(data, index) in listState.factsList"
-      :element="data"
+      v-for="(element, index) in listState.factsList"
+      :element="element"
       :key="index"
     >
-      <button @click="removeFromState(index)">Remove one</button>
+      <button @click="removeFromStateAndState(index, element.date)">Remove one</button>
     </FactCard>
-  </div>
+  </section>
 </template>
 
 <script>
 import FactCard from '../components/FactCard.vue';
 import store from '../store';
+import { removeOneFromStorage, clearAllStorage } from '../utils/storage';
 
 export default {
   name: 'History',
   components: { FactCard },
 
   setup() {
-    const removeFromState = (index) => {
+    const removeFromStateAndState = (index, key) => {
       store.removeOne(index);
+      removeOneFromStorage(key);
     };
 
-    const clearState = () => {
+    const clearStateAndStorage = () => {
       store.clearAll();
+      clearAllStorage();
     };
-    return { listState: store.getState(), removeFromState, clearState };
+
+    return { listState: store.getState(), removeFromStateAndState, clearStateAndStorage };
   },
 };
 </script>
@@ -58,5 +62,8 @@ export default {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   column-gap: 1rem;
+}
+.cards-container button {
+  background-color: #fff;
 }
 </style>

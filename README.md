@@ -19,6 +19,10 @@ npm run dev
 - regex for input validation
 - ~~disbale buttons when list is empty~~
 - ~~check for duplicate before api call, not after~~
-- use of local storage to save data between page reloads
+- ~~use of local storage to save data between page reloads~~
 - ~~adding button to remove one fact from the list on history page, using slots~~
-- remove unused css
+- ~~remove unused css~~
+
+## API used
+
+[Numbers API](http://numbersapi.com/)

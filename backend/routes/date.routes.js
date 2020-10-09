@@ -7,9 +7,7 @@ const numbersApi = 'http://numbersapi.com/';
 
 const fetchFact = async (term) => {
   try {
-    const res = await axios
-      .get(numbersApi + `${term}/date`)
-      .then((res) => res.data);
+    const res = await axios.get(numbersApi + `${term}/date`).then((res) => res.data);
     return res;
   } catch (error) {
     console.log(error);

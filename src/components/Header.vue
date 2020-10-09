@@ -4,9 +4,7 @@
       <h1>Dates Facts</h1>
       <span>
         With
-        <a v-bind:href="vue" target="_blank" rel="noopener noreferrer"
-          >Vue.js</a
-        >
+        <a v-bind:href="vue" target="_blank" rel="noopener noreferrer">Vue.js</a>
         and
         <a v-bind:href="numbersapi" target="_blank" rel="noopener noreferrer"
           >Numbers API</a
