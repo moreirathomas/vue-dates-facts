@@ -15,7 +15,7 @@
     </div>
     <div class="actions-wrapper">
       <button @click="clearStateAndStorage" :disabled="!listState.factsList.length">
-        Clear all
+        Clear history
       </button>
     </div>
   </section>

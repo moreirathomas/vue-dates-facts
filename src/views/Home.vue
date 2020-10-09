@@ -11,22 +11,16 @@
 
     <div class="actions-wrapper">
       <input type="text" v-model="input" @keyup.enter="handleSearch" />
-      <button class="primary" @click="handleSearch" :disabled="!input">Add</button>
-      <button @click="clearStateAndStorage" :disabled="!listState.factsList.length">
-        Clear all
+      <button class="primary" @click="handleSearch" :disabled="!input">Search</button>
+      <button @click="clearCurrent" :disabled="!listState.factsList.length">
+        Clear search
       </button>
-      <pre class="error" v-if="errorMessage">
-        <strong>Error:</strong> {{ errorMessage }}.
-      </pre>
+      <p class="error" v-if="errorMessage"><strong>Error:</strong> {{ errorMessage }}.</p>
     </div>
   </section>
 
-  <section class="cards-container" v-if="listState.factsList.length">
-    <FactCard
-      v-for="(element, index) in listState.factsList"
-      :element="element"
-      :key="index"
-    />
+  <section class="cards-container" v-if="currentList.length">
+    <FactCard v-for="(element, index) in currentList" :element="element" :key="index" />
   </section>
 </template>
 
@@ -34,7 +28,7 @@
 import FactCard from '../components/FactCard.vue';
 import store from '../store';
 import { fetchData, checkDuplicate } from '../utils/api';
-import { addOneToStorage, clearAllStorage } from '../utils/storage';
+import { addOneToStorage } from '../utils/storage';
 
 export default {
   name: 'Home',
@@ -42,6 +36,7 @@ export default {
 
   data() {
     return {
+      currentList: [],
       input: '',
       errorMessage: '',
       loading: false,
@@ -62,6 +57,7 @@ export default {
     async handleSearch() {
       if (this.loading === false) {
         this.loading === true;
+        this.errorMessage = '';
 
         // create new array from inputs string, Set has no duplicates
         let inputs = [...new Set(this.splitInputs())];
@@ -69,16 +65,21 @@ export default {
         inputs = inputs.filter(
           (input) => !checkDuplicate(input, this.listState.factsList)
         );
-        const res = await fetchData(inputs);
-        res.map((el) => this.addToStateAndStorage(el));
-
+        if (inputs.length) {
+          const res = await fetchData(inputs);
+          res.map((el) => this.currentList.push(el));
+          res.map((el) => this.addToStateAndStorage(el));
+        } else {
+          this.errorMessage = 'Invalid input or already in history';
+        }
         this.loading === false;
         this.input = '';
       } else {
-        this.errorMessage = 'Please wait';
-        console.log('request blocked!');
-        return;
+        this.errorMessage = 'Wwaiting for request to end';
       }
+    },
+    clearCurrent() {
+      this.currentList.length = 0;
     },
   },
 
@@ -88,12 +89,7 @@ export default {
       addOneToStorage(element);
     };
 
-    const clearStateAndStorage = () => {
-      store.clearAll();
-      clearAllStorage();
-    };
-
-    return { listState: store.getState(), addToStateAndStorage, clearStateAndStorage };
+    return { listState: store.getState(), addToStateAndStorage };
   },
 };
 </script>
@@ -106,7 +102,7 @@ export default {
   margin: 0;
   color: var(--red);
   max-height: 3rem;
-  max-width: 26.24rem;
+  max-width: 10.5625rem;
   margin: 0.25rem 0.25rem 0.25rem auto;
   overflow-x: scroll;
   overflow-y: hidden;
