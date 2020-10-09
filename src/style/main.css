@@ -29,8 +29,7 @@ h3 {
 }
 
 h1,
-h2,
-strong {
+h2 {
   color: #333;
 }
 
@@ -50,7 +49,7 @@ pre {
 }
 
 a {
-  color: #f56a6a;
+  color: #67b587;
 }
 
 blockquote,

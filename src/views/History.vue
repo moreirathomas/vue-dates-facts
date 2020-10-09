@@ -1,17 +1,23 @@
 <template>
   <div class="content-header">
-    <h3>Search history:</h3>
-    <p v-if="listState.factsList.length">
-      You searched for <code>{{ listState.factsList.length }}</code> date{{
-        listState.factsList.length > 1 ? 's' : ''
-      }}
-      in total.
-    </p>
-    <p v-else>
-      <code>0</code> search in history, try searching for dates from the
-      <router-link to="/">homepage</router-link>.
-    </p>
-    <button @click="clearState">Clear all</button>
+    <div class="text-wrapper">
+      <h3>Search history:</h3>
+      <p v-if="listState.factsList.length">
+        You searched for <code>{{ listState.factsList.length }}</code> date{{
+          listState.factsList.length > 1 ? 's' : ''
+        }}
+        in total.
+      </p>
+      <p v-else>
+        <code>0</code> search in history, try searching for dates from the
+        <router-link to="/">homepage</router-link>.
+      </p>
+    </div>
+    <div class="actions-wrapper">
+      <button @click="clearState" :disabled="!listState.factsList.length">
+        Clear all
+      </button>
+    </div>
   </div>
 
   <div class="cards-container" v-if="listState.factsList.length">
@@ -19,7 +25,9 @@
       v-for="(data, index) in listState.factsList"
       :element="data"
       :key="index"
-    />
+    >
+      <button @click="removeFromState(index)">Remove one</button>
+    </FactCard>
   </div>
 </template>
 
@@ -32,10 +40,14 @@ export default {
   components: { FactCard },
 
   setup() {
-    const clearState = () => {
-      store.clear();
+    const removeFromState = (index) => {
+      store.removeOne(index);
     };
-    return { listState: store.getState(), clearState };
+
+    const clearState = () => {
+      store.clearAll();
+    };
+    return { listState: store.getState(), removeFromState, clearState };
   },
 };
 </script>

@@ -12,17 +12,15 @@ class Store {
     };
   }
 
-  add(element) {
-    if (
-      element.date &&
-      element.fact &&
-      this.state.factsList.findIndex((el) => el.date === element.date) === -1
-    ) {
-      this.state.factsList.push(element);
-    }
+  addOne(el) {
+    this.state.factsList.push(el);
   }
 
-  clear() {
+  removeOne(index) {
+    this.state.factsList.splice(index, 1);
+  }
+
+  clearAll() {
     this.state.factsList.length = 0;
   }
 
