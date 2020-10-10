@@ -27,6 +27,10 @@ class Store {
   getState() {
     return readonly(this.state);
   }
+
+  isInStore(term) {
+    return readonly(this.state.factsList.some((el) => el.date === term));
+  }
 }
 
 const store = new Store();

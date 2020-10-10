@@ -1,7 +1,7 @@
 <template>
   <div class="fact-card">
     <div class="card-header">
-      <h4>{{ element.date }}</h4>
+      <h4>“{{ element.date }}”</h4>
       <div class="slot-wrapper">
         <slot></slot>
       </div>

@@ -28,19 +28,13 @@ h3 {
   margin-top: 1.5rem;
 }
 
-code,
-pre {
+code {
   background: #eee;
 }
 
 code {
   padding: 2px 4px;
   vertical-align: text-bottom;
-}
-
-pre {
-  border-left: 2px solid #bbb;
-  padding: 1rem;
 }
 
 a {

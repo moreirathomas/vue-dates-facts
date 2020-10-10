@@ -3,21 +3,12 @@ import axios from 'axios';
 const url = 'http://localhost:4000/api';
 
 /**
- * @param {string} inputs
- * @param {{date: string, fact: string}[]} list
- * @returns {boolean} fasle: not a duplicate, true: duplicate
- */
-export function checkDuplicate(input, list) {
-  return list.findIndex((el) => el.date === input) !== -1;
-}
-
-/**
- * @param {string[]} inputs
+ * @param {string[]} terms
  * @returns {{date: string, fact: string}[]}
  */
-export async function fetchData(inputs) {
+export async function fetchData(terms) {
   try {
-    const res = await axios.post(url, inputs).then((res) => res.data);
+    const res = await axios.post(url, terms).then((res) => res.data);
     return res;
   } catch (error) {
     console.log(error);

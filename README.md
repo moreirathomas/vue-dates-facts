@@ -12,17 +12,17 @@ npm install
 npm run dev
 ```
 
-## Roadmap and improvement
+## Roadmap and improvements
 
-- ~~error message display to user~~
-- ~~disbale buttons when list is empty~~
-- ~~check for duplicate before api call, not after~~
-- ~~use of local storage to save data between page reloads~~
-- ~~adding button to remove one fact from the list on history page, using slots~~
-- ~~remove unused css~~
-- ~~separate Home list from global store~~
-- regex validation for input
-- better error handling
+- [x] error message display to user
+- [x] disbale buttons when list is empty
+- [x] check for duplicate before api call, not after
+- [x] use of local storage to save data between page reloads
+- [x] adding button to remove one fact from the list on history page, using slots
+- [x] remove unused css
+- [x] separate Home list from global store
+- [x] regex validation for input
+- [ ] better error handling
 
 ## API used
 

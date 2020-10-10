@@ -3,16 +3,18 @@
     <div class="text-wrapper">
       <h3>Enter dates separated by commas:</h3>
       <p>
-        Use <code>month/day</code> format for better results. For example:
-        <code>05/11, {{ today }}</code
+        Use month and day, i.e. <code>mm/dd</code>, <code>m/d</code>, <code>mm/d</code> or
+        <code>m/dd</code> formats. For example: <code>05/11, {{ today }}</code
         >.
       </p>
     </div>
 
     <div class="actions-wrapper">
-      <input type="text" v-model="input" @keyup.enter="handleSearch" />
-      <button class="primary" @click="handleSearch" :disabled="!input">Search</button>
-      <button @click="clearCurrent" :disabled="!listState.factsList.length">
+      <input type="text" v-model="inputString" @keyup.enter="handleSearch" />
+      <button class="primary" @click="handleSearch" :disabled="!inputString">
+        Search
+      </button>
+      <button @click="clearCurrent" :disabled="!currentList.length">
         Clear search
       </button>
       <p class="error" v-if="errorMessage"><strong>Error:</strong> {{ errorMessage }}.</p>
@@ -27,8 +29,9 @@
 <script>
 import FactCard from '../components/FactCard.vue';
 import store from '../store';
-import { fetchData, checkDuplicate } from '../utils/api';
+import { fetchData } from '../utils/api';
 import { addOneToStorage } from '../utils/storage';
+import { computeTerms } from '../utils/terms';
 
 export default {
   name: 'Home',
@@ -37,7 +40,7 @@ export default {
   data() {
     return {
       currentList: [],
-      input: '',
+      inputString: '',
       errorMessage: '',
       loading: false,
     };
@@ -51,33 +54,29 @@ export default {
   },
 
   methods: {
-    splitInputs() {
-      return this.input.split(',').map((string) => string.trim());
-    },
     async handleSearch() {
       if (this.loading === false) {
         this.loading === true;
         this.errorMessage = '';
 
-        // create new array from inputs string, Set has no duplicates
-        let inputs = [...new Set(this.splitInputs())];
-        // remove all duplicates, ie date already in current list
-        inputs = inputs.filter(
-          (input) => !checkDuplicate(input, this.listState.factsList)
-        );
-        if (inputs.length) {
-          const res = await fetchData(inputs);
+        let terms = computeTerms(this.inputString);
+        terms = terms.filter((term) => this.canAdd(term));
+
+        if (terms.length) {
+          const res = await fetchData(terms);
           res.map((el) => this.currentList.push(el));
           res.map((el) => this.addToStateAndStorage(el));
         } else {
           this.errorMessage = 'Invalid input or already in history';
         }
+
         this.loading === false;
-        this.input = '';
+        this.inputString = '';
       } else {
-        this.errorMessage = 'Wwaiting for request to end';
+        this.errorMessage = 'Waiting for request to end';
       }
     },
+
     clearCurrent() {
       this.currentList.length = 0;
     },
@@ -89,7 +88,11 @@ export default {
       addOneToStorage(element);
     };
 
-    return { listState: store.getState(), addToStateAndStorage };
+    const canAdd = (term) => {
+      return !store.isInStore(term);
+    };
+
+    return { listState: store.getState(), addToStateAndStorage, canAdd };
   },
 };
 </script>
