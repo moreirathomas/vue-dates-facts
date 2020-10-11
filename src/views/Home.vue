@@ -3,9 +3,11 @@
     <div class="text-wrapper">
       <h3>Enter dates separated by commas:</h3>
       <p>
-        Use month and day, i.e. <code>mm/dd</code>, <code>m/d</code>, <code>mm/d</code> or
-        <code>m/dd</code> formats. For example: <code>05/11, {{ today }}</code
+        Use months and days, i.e. <code>mm/dd</code>, <code>m/d</code>,
+        <code>mm/d</code> or <code>m/dd</code> formats. For example:
+        <code class="copy" @click="copyInput" ref="toCopy">05/11, {{ today }}</code
         >.
+        <code class="copied" v-if="showCopied">Text copied!</code>
       </p>
     </div>
 
@@ -43,6 +45,7 @@ export default {
       inputString: '',
       errorMessage: '',
       loading: false,
+      showCopied: false,
     };
   },
 
@@ -80,6 +83,13 @@ export default {
     clearCurrent() {
       this.currentList.length = 0;
     },
+
+    copyInput() {
+      this.showCopied = true;
+      const copyString = this.$refs.toCopy.innerHTML;
+      navigator.clipboard.writeText(copyString);
+      setTimeout(() => (this.showCopied = false), 1500);
+    },
   },
 
   setup() {
@@ -101,14 +111,19 @@ export default {
 .actions-wrapper {
   display: flex;
 }
+.copy {
+  cursor: pointer;
+}
+.copied {
+  color: var(--green);
+  float: right;
+}
 .error {
   margin: 0;
   color: var(--red);
   max-height: 3rem;
   max-width: 10.5625rem;
   margin: 0.25rem 0.25rem 0.25rem auto;
-  overflow-x: scroll;
-  overflow-y: hidden;
 }
 .cards-container {
   margin-top: 1rem;
