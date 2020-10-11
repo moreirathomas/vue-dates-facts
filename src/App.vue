@@ -8,15 +8,15 @@
 <script lang="ts">
 import AppHeader from './components/AppHeader.vue';
 import store from './store';
-
 import { getAllStorage } from './utils/storage';
+import { Fact } from './types';
 
 export default {
   name: 'App',
   components: { AppHeader },
 
   setup() {
-    const addToState = (element) => {
+    const addToState = (element: Fact) => {
       store.addOne(element);
     };
 
