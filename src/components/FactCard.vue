@@ -10,10 +10,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Fact } from '../types';
+
 export default {
   name: 'FactCard',
-  props: ['element'],
+  props: {
+    element: Object as () => Fact,
+  },
 };
 </script>
 

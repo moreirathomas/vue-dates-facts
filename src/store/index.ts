@@ -1,6 +1,9 @@
 import { reactive, readonly } from 'vue';
+import { Fact } from '../types';
 
 class Store {
+  state: { factsList: Fact[] };
+
   constructor() {
     let data = this.data();
     this.state = reactive(data);
@@ -12,11 +15,11 @@ class Store {
     };
   }
 
-  addOne(el) {
+  addOne(el: Fact) {
     this.state.factsList.push(el);
   }
 
-  removeOne(index) {
+  removeOne(index: number) {
     this.state.factsList.splice(index, 1);
   }
 
@@ -28,8 +31,8 @@ class Store {
     return readonly(this.state);
   }
 
-  isInStore(term) {
-    return readonly(this.state.factsList.some((el) => el.date === term));
+  isInStore(term: string): boolean {
+    return this.state.factsList.some((el) => el.date === term);
   }
 }
 

@@ -1,19 +1,20 @@
 <template>
-  <Header />
+  <AppHeader />
   <main>
     <router-view />
   </main>
 </template>
 
-<script>
-import Header from './components/Header';
+<script lang="ts">
+import AppHeader from './components/AppHeader.vue';
 import store from './store';
 
 import { getAllStorage } from './utils/storage';
 
 export default {
   name: 'App',
-  components: { Header },
+  components: { AppHeader },
+
   setup() {
     const addToState = (element) => {
       store.addOne(element);
@@ -21,6 +22,7 @@ export default {
 
     return { listState: store.getState(), addToState };
   },
+
   created() {
     const storage = getAllStorage();
     storage.map((el) => this.addToState(el));

@@ -22,6 +22,7 @@ npm run dev
 - [x] remove unused css
 - [x] separate Home list from global store
 - [x] regex validation for input
+- [x] TypeScript migration
 - [ ] better error handling
 
 ## API used

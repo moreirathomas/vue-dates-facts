@@ -28,20 +28,21 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
 import FactCard from '../components/FactCard.vue';
 import store from '../store';
 import { fetchData } from '../utils/api';
 import { addOneToStorage } from '../utils/storage';
 import { computeTerms } from '../utils/terms';
+import { Fact } from '../types';
 
 export default {
-  name: 'Home',
+  name: 'PageSearch',
   components: { FactCard },
 
   data() {
     return {
-      currentList: [],
+      currentList: [] as Fact[],
       inputString: '',
       errorMessage: '',
       loading: false,
@@ -50,14 +51,14 @@ export default {
   },
 
   computed: {
-    today() {
+    today(): string {
       const today = new Date();
       return today.getMonth() + 1 + '/' + today.getDate();
     },
   },
 
   methods: {
-    async handleSearch() {
+    async handleSearch(): Promise<void> {
       if (this.loading === false) {
         this.loading === true;
         this.errorMessage = '';
@@ -80,11 +81,11 @@ export default {
       }
     },
 
-    clearCurrent() {
+    clearCurrent(): void {
       this.currentList.length = 0;
     },
 
-    copyInput() {
+    copyInput(): void {
       this.showCopied = true;
       const copyString = this.$refs.toCopy.innerHTML;
       navigator.clipboard.writeText(copyString);
@@ -93,12 +94,12 @@ export default {
   },
 
   setup() {
-    const addToStateAndStorage = (element) => {
+    const addToStateAndStorage = (element: Fact): void => {
       store.addOne(element);
       addOneToStorage(element);
     };
 
-    const canAdd = (term) => {
+    const canAdd = (term: string): boolean => {
       return !store.isInStore(term);
     };
 

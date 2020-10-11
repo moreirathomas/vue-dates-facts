@@ -25,9 +25,9 @@
   </header>
 </template>
 
-<script>
+<script lang="ts">
 export default {
-  name: 'Header',
+  name: 'AppHeader',
   data() {
     return {
       vue: 'https://v3.vuejs.org/',

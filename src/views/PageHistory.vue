@@ -31,22 +31,22 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
 import FactCard from '../components/FactCard.vue';
 import store from '../store';
 import { removeOneFromStorage, clearAllStorage } from '../utils/storage';
 
 export default {
-  name: 'History',
+  name: 'PageHistory',
   components: { FactCard },
 
   setup() {
-    const removeFromStateAndState = (index, key) => {
+    const removeFromStateAndState = (index: number, key: string): void => {
       store.removeOne(index);
       removeOneFromStorage(key);
     };
 
-    const clearStateAndStorage = () => {
+    const clearStateAndStorage = (): void => {
       store.clearAll();
       clearAllStorage();
     };
