@@ -32,11 +32,12 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue'; // for typescript support
 import FactCard from '../components/FactCard.vue';
 import store from '../store';
 import { removeOneFromStorage, clearAllStorage } from '../utils/storage';
 
-export default {
+export default defineComponent({
   name: 'PageHistory',
   components: { FactCard },
 
@@ -53,7 +54,7 @@ export default {
 
     return { listState: store.getState(), removeFromStateAndState, clearStateAndStorage };
   },
-};
+});
 </script>
 
 <style scoped>

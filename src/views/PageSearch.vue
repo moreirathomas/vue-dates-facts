@@ -29,6 +29,7 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue'; // for typescript support
 import FactCard from '../components/FactCard.vue';
 import store from '../store';
 import { fetchData } from '../utils/api';
@@ -36,7 +37,7 @@ import { addOneToStorage } from '../utils/storage';
 import { computeTerms } from '../utils/terms';
 import { Fact } from '../types';
 
-export default {
+export default defineComponent({
   name: 'PageSearch',
   components: { FactCard },
 
@@ -60,7 +61,7 @@ export default {
   methods: {
     async handleSearch(): Promise<void> {
       if (this.loading === false) {
-        this.loading === true;
+        this.loading = true;
         this.errorMessage = '';
 
         let terms = computeTerms(this.inputString);
@@ -68,13 +69,13 @@ export default {
 
         if (terms.length) {
           const res = await fetchData(terms);
-          res.map((el) => this.currentList.push(el));
-          res.map((el) => this.addToStateAndStorage(el));
+          res?.map((el) => this.currentList.push(el));
+          res?.map((el) => this.addToStateAndStorage(el));
         } else {
           this.errorMessage = 'Invalid input or already in history';
         }
 
-        this.loading === false;
+        this.loading = false;
         this.inputString = '';
       } else {
         this.errorMessage = 'Waiting for request to end';
@@ -87,8 +88,8 @@ export default {
 
     copyInput(): void {
       this.showCopied = true;
-      const copyString = this.$refs.toCopy.innerHTML;
-      navigator.clipboard.writeText(copyString);
+      const copyEl: any = this.$refs.toCopy; // to avoid "Object is of type 'unknown'." error
+      navigator.clipboard.writeText(copyEl.innerHTML);
       setTimeout(() => (this.showCopied = false), 1500);
     },
   },
@@ -105,7 +106,7 @@ export default {
 
     return { listState: store.getState(), addToStateAndStorage, canAdd };
   },
-};
+});
 </script>
 
 <style scoped>

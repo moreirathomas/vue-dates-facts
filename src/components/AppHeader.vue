@@ -26,7 +26,9 @@
 </template>
 
 <script lang="ts">
-export default {
+import { defineComponent } from 'vue'; // for typescript support
+
+export default defineComponent({
   name: 'AppHeader',
   data() {
     return {
@@ -35,7 +37,7 @@ export default {
       repository: 'https://github.com/moreirathomas/vue-dates-facts',
     };
   },
-};
+});
 </script>
 
 <style scoped>

@@ -6,12 +6,13 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue'; // for typescript support
 import AppHeader from './components/AppHeader.vue';
 import store from './store';
 import { getAllStorage } from './utils/storage';
 import { Fact } from './types';
 
-export default {
+export default defineComponent({
   name: 'App',
   components: { AppHeader },
 
@@ -27,7 +28,7 @@ export default {
     const storage = getAllStorage();
     storage.map((el) => this.addToState(el));
   },
-};
+});
 </script>
 
 <style>

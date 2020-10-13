@@ -11,14 +11,15 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue'; // for typescript support
 import { Fact } from '../types';
 
-export default {
+export default defineComponent({
   name: 'FactCard',
   props: {
     element: Object as () => Fact,
   },
-};
+});
 </script>
 
 <style scoped>
