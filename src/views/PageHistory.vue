@@ -67,4 +67,10 @@ export default defineComponent({
 .cards-container button {
   background-color: #fff;
 }
+@media (max-width: 425px) {
+  .cards-container {
+    display: flex;
+    flex-direction: column;
+  }
+}
 </style>

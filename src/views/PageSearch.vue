@@ -132,4 +132,11 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
 }
+@media (max-width: 425px) {
+  .actions-wrapper,
+  .cards-container {
+    display: flex;
+    flex-direction: column;
+  }
+}
 </style>
